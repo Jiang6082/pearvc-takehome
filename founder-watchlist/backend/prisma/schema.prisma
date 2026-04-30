@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TrackingStatus {
+  WATCHING
+  WARM
+  ACTIVE
+  PASSED
+}
+
+enum TrackingPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum SignalType {
+  JOB_CHANGE
+  COMPANY_STARTED
+  PRODUCT_LAUNCH
+  FUNDRAISING
+  HIRING
+  COFOUNDER_SEARCH
+  SOCIAL_TRACTION
+  COMPANY_PIVOT
+  MANUAL
+}
+
+model User {
+  id                    String       @id @default(uuid())
+  name                  String
+  email                 String       @unique
+  passwordHash          String
+  role                  String       @default("investor")
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  trackingRelationships Tracking[]
+  sharedNotes           SharedNote[]
+}
+
+model Founder {
+  id                    String         @id @default(uuid())
+  fullName              String
+  linkedinUrl           String?        @unique
+  email                 String?
+  currentTitle          String?
+  currentCompany        String?
+  location              String?
+  bio                   String?
+  profileImageUrl       String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  trackingRelationships Tracking[]
+  sharedNotes           SharedNote[]
+  updates               UpdateSignal[]
+  tags                  FounderTag[]
+}
+
+model Tracking {
+  id              String           @id @default(uuid())
+  userId          String
+  founderId       String
+  status          TrackingStatus   @default(WATCHING)
+  priority        TrackingPriority @default(MEDIUM)
+  privateNotes    String?
+  lastContactedAt DateTime?
+  isOwner         Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  founder         Founder          @relation(fields: [founderId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, founderId])
+}
+
+model SharedNote {
+  id        String   @id @default(uuid())
+  founderId String
+  authorId  String
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  founder   Founder  @relation(fields: [founderId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model UpdateSignal {
+  id              String     @id @default(uuid())
+  founderId       String
+  signalType      SignalType
+  title           String
+  description     String
+  sourceName      String?
+  sourceUrl       String?
+  confidenceScore Float      @default(0.8)
+  isDismissed     Boolean    @default(false)
+  isImportant     Boolean    @default(false)
+  detectedAt      DateTime
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  founder         Founder    @relation(fields: [founderId], references: [id], onDelete: Cascade)
+}
+
+model Tag {
+  id        String       @id @default(uuid())
+  name      String       @unique
+  createdAt DateTime     @default(now())
+  founders  FounderTag[]
+}
+
+model FounderTag {
+  founderId String
+  tagId     String
+  founder   Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([founderId, tagId])
+  @@unique([founderId, tagId])
+}

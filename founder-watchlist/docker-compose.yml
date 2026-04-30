@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: founder-watchlist-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: founder
+      POSTGRES_PASSWORD: founderpass
+      POSTGRES_DB: founder_watchlist
+    ports:
+      - "5432:5432"
+    volumes:
+      - founder_watchlist_data:/var/lib/postgresql/data
+
+volumes:
+  founder_watchlist_data:
