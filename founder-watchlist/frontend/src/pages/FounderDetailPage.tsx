@@ -34,18 +34,23 @@ export default function FounderDetailPage() {
 
   return (
     <div className="space-y-5">
-      <Link to="/founders" className="text-sm text-slate-600 hover:underline">Back to founders</Link>
-      <div className="rounded border border-slate-200 bg-white p-6">
+      <Link to="/founders" className="text-sm font-semibold text-teal-800 hover:underline">Back to founders</Link>
+      <div className="panel overflow-hidden">
+        <div className="border-b border-stone-200 bg-slate-950 px-6 py-5 text-white">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-200">Founder profile</p>
+        </div>
+        <div className="p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-semibold text-slate-950">{founder.fullName}</h1>
-            <p className="mt-1 text-slate-600">{[founder.currentTitle, founder.currentCompany].filter(Boolean).join(" at ") || "No current role"}</p>
+            <h1 className="text-4xl font-semibold text-slate-950">{founder.fullName}</h1>
+            <p className="mt-2 text-base text-slate-600">{[founder.currentTitle, founder.currentCompany].filter(Boolean).join(" at ") || "No current role"}</p>
             <p className="mt-1 text-sm text-slate-500">{founder.location || ""}</p>
-            {founder.linkedinUrl && <a href={founder.linkedinUrl} target="_blank" className="mt-2 inline-block text-sm font-medium text-slate-900 underline">LinkedIn</a>}
+            {founder.linkedinUrl && <a href={founder.linkedinUrl} target="_blank" className="mt-3 inline-block text-sm font-semibold text-teal-800 underline decoration-teal-800/30 underline-offset-4">LinkedIn</a>}
           </div>
-          <div className="flex flex-wrap gap-2">{founder.tags.map((tag) => <span key={tag.id} className="rounded bg-slate-100 px-2 py-1 text-xs">{tag.name}</span>)}</div>
+          <div className="flex max-w-md flex-wrap gap-2">{founder.tags.map((tag) => <span key={tag.id} className="chip">{tag.name}</span>)}</div>
         </div>
-        {founder.bio && <p className="mt-4 max-w-3xl text-sm text-slate-700">{founder.bio}</p>}
+        {founder.bio && <p className="mt-5 max-w-3xl text-sm leading-6 text-slate-700">{founder.bio}</p>}
+        </div>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[360px_1fr]">
@@ -54,16 +59,16 @@ export default function FounderDetailPage() {
           <NotesPanel founderId={founder.id} notes={founder.sharedNotes || []} onChange={load} />
         </div>
         <section className="space-y-3">
-          <div className="rounded border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold text-slate-950">Add Manual Update</h2>
+          <div className="panel p-5">
+            <h2 className="section-title">Add Manual Update</h2>
             <form onSubmit={addManual} className="mt-3 grid gap-3">
-              <input value={manual.title} onChange={(event) => setManual({ ...manual, title: event.target.value })} placeholder="Update title" className="rounded border border-slate-300 px-3 py-2" />
-              <textarea value={manual.description} onChange={(event) => setManual({ ...manual, description: event.target.value })} placeholder="What changed?" rows={3} className="rounded border border-slate-300 px-3 py-2" />
-              <button className="w-fit rounded bg-slate-900 px-4 py-2 text-sm text-white">Add Update</button>
+              <input value={manual.title} onChange={(event) => setManual({ ...manual, title: event.target.value })} placeholder="Update title" className="input" />
+              <textarea value={manual.description} onChange={(event) => setManual({ ...manual, description: event.target.value })} placeholder="What changed?" rows={3} className="input" />
+              <button className="btn-primary w-fit">Add Update</button>
             </form>
           </div>
-          <h2 className="font-semibold text-slate-950">Update Timeline</h2>
-          {(founder.updates || []).length ? founder.updates!.map((update) => <UpdateCard key={update.id} update={{ ...update, founder }} onPatch={patchUpdate} />) : <div className="rounded border border-dashed border-slate-300 bg-white p-8 text-sm text-slate-600">No updates yet.</div>}
+          <h2 className="section-title">Update Timeline</h2>
+          {(founder.updates || []).length ? founder.updates!.map((update) => <UpdateCard key={update.id} update={{ ...update, founder }} onPatch={patchUpdate} />) : <div className="empty-state">No updates yet.</div>}
         </section>
       </div>
     </div>

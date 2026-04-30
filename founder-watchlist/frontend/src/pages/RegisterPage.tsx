@@ -22,18 +22,19 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
-      <form onSubmit={submit} className="w-full max-w-md rounded border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-semibold text-slate-950">Create account</h1>
-        {error && <div className="mt-4 rounded bg-rose-50 p-3 text-sm text-rose-700">{error}</div>}
-        <label className="mt-5 block text-sm font-medium">Name</label>
-        <input value={name} onChange={(event) => setName(event.target.value)} className="mt-1 w-full rounded border border-slate-300 px-3 py-2" />
-        <label className="mt-4 block text-sm font-medium">Email</label>
-        <input value={email} onChange={(event) => setEmail(event.target.value)} className="mt-1 w-full rounded border border-slate-300 px-3 py-2" />
-        <label className="mt-4 block text-sm font-medium">Password</label>
-        <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="mt-1 w-full rounded border border-slate-300 px-3 py-2" />
-        <button className="mt-6 w-full rounded bg-slate-900 px-4 py-2 font-medium text-white">Register</button>
-        <p className="mt-4 text-sm text-slate-600">Already have an account? <Link to="/login" className="font-medium text-slate-950 underline">Log in</Link></p>
+    <div className="grid min-h-screen place-items-center px-4 py-10">
+      <form onSubmit={submit} className="panel w-full max-w-md p-8 sm:p-10">
+        <p className="eyebrow">New investor</p>
+        <h1 className="mt-2 text-2xl font-semibold text-slate-950">Create account</h1>
+        {error && <div className="mt-5 rounded-md border border-rose-200 bg-rose-50 p-3 text-sm font-medium text-rose-700">{error}</div>}
+        <label className="mt-6 block text-sm font-semibold text-slate-700">Name</label>
+        <input value={name} onChange={(event) => setName(event.target.value)} className="input mt-2 w-full" />
+        <label className="mt-4 block text-sm font-semibold text-slate-700">Email</label>
+        <input value={email} onChange={(event) => setEmail(event.target.value)} className="input mt-2 w-full" />
+        <label className="mt-4 block text-sm font-semibold text-slate-700">Password</label>
+        <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="input mt-2 w-full" />
+        <button className="btn-primary mt-6 w-full py-3">Register</button>
+        <p className="mt-5 text-sm text-slate-600">Already have an account? <Link to="/login" className="font-semibold text-teal-800 underline decoration-teal-800/30 underline-offset-4">Log in</Link></p>
       </form>
     </div>
   );

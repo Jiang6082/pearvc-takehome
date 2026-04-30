@@ -23,12 +23,13 @@ export default function FounderListPage() {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between">
+      <div className="page-header">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-950">Founders</h1>
-          <p className="text-sm text-slate-600">Filter the watchlist as it grows.</p>
+          <p className="eyebrow">Watchlist</p>
+          <h1 className="page-title">Founders</h1>
+          <p className="page-subtitle">Filter the watchlist as it grows and spot the strongest next conversation.</p>
         </div>
-        <Link to="/founders/new" className="rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white">Add Founder</Link>
+        <Link to="/founders/new" className="btn-primary">Add Founder</Link>
       </div>
       <FiltersBar filters={filters} tags={tags} onChange={setFilters} />
       {loading ? <p className="text-sm text-slate-600">Loading founders...</p> : <FounderTable founders={founders} />}

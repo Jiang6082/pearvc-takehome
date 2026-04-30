@@ -40,7 +40,7 @@ npx prisma db seed
 npm run dev
 ```
 
-The API runs at `http://localhost:5000`.
+The API runs at `http://localhost:5001`.
 
 ## Frontend Setup
 

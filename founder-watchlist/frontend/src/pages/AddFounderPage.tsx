@@ -21,9 +21,10 @@ export default function AddFounderPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="text-2xl font-semibold text-slate-950">Add Founder</h1>
-      <p className="mt-1 text-sm text-slate-600">Start with a name, then add only the context that helps you track follow-up.</p>
-      {notice && <div className="mt-4 rounded bg-amber-50 p-3 text-sm text-amber-800">{notice}</div>}
+      <p className="eyebrow">New profile</p>
+      <h1 className="page-title">Add Founder</h1>
+      <p className="page-subtitle">Start with a name, then add only the context that helps you track follow-up.</p>
+      {notice && <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm font-medium text-amber-800">{notice}</div>}
       <div className="mt-5"><FounderForm tags={tags} onSubmit={submit} /></div>
     </div>
   );

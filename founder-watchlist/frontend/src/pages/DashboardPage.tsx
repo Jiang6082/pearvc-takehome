@@ -31,32 +31,52 @@ export default function DashboardPage() {
   }, [founders]);
 
   return (
-    <div className="space-y-7">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-950">Dashboard</h1>
-        <p className="text-sm text-slate-600">Who should you pay attention to now?</p>
+    <div className="space-y-8">
+      <div className="page-header">
+        <div>
+          <p className="eyebrow">Investor cockpit</p>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="page-subtitle">The founders, signals, and follow-ups that deserve attention this week.</p>
+        </div>
+        <div className="grid grid-cols-3 gap-2 rounded-lg border border-stone-200 bg-white/80 p-2 text-center shadow-sm">
+          <div className="px-4 py-2">
+            <p className="text-2xl font-semibold text-slate-950">{founders.length}</p>
+            <p className="text-xs font-medium text-slate-500">Tracked</p>
+          </div>
+          <div className="border-x border-stone-200 px-4 py-2">
+            <p className="text-2xl font-semibold text-teal-700">{updates.filter((update) => update.isImportant).length}</p>
+            <p className="text-xs font-medium text-slate-500">Important</p>
+          </div>
+          <div className="px-4 py-2">
+            <p className="text-2xl font-semibold text-amber-700">{followUps.length}</p>
+            <p className="text-xs font-medium text-slate-500">Follow-ups</p>
+          </div>
+        </div>
       </div>
 
       <section className="space-y-3">
-        <h2 className="font-semibold text-slate-950">Recent High-Signal Updates</h2>
-        {updates.slice(0, 5).length ? updates.slice(0, 5).map((update) => <UpdateCard key={update.id} update={update} onPatch={patchUpdate} />) : <div className="rounded border border-dashed border-slate-300 bg-white p-8 text-sm text-slate-600">No updates yet. Run mock ingestion to simulate new founder activity.</div>}
+        <h2 className="section-title">Recent High-Signal Updates</h2>
+        {updates.slice(0, 5).length ? updates.slice(0, 5).map((update) => <UpdateCard key={update.id} update={update} onPatch={patchUpdate} />) : <div className="empty-state">No updates yet. Run mock ingestion to simulate new founder activity.</div>}
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-semibold text-slate-950">Suggested Follow-Ups</h2>
+        <h2 className="section-title">Suggested Follow-Ups</h2>
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {followUps.map((founder) => (
-            <Link key={founder.id} to={`/founders/${founder.id}`} className="rounded border border-slate-200 bg-white p-4 shadow-sm hover:border-slate-400">
-              <h3 className="font-semibold text-slate-950">{founder.fullName}</h3>
-              <p className="mt-1 text-sm text-slate-600">{founder.latestUpdate?.title || "Check in on tracking status"}</p>
-              <p className="mt-2 text-xs text-slate-500">{founder.trackingCount || 0} investor(s) tracking · {founder.myTracking?.priority || "No"} priority</p>
+            <Link key={founder.id} to={`/founders/${founder.id}`} className="panel-soft block p-4 hover:-translate-y-0.5 hover:border-teal-700/40 hover:shadow-[0_18px_35px_rgba(15,118,110,0.12)]">
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="font-semibold text-slate-950">{founder.fullName}</h3>
+                <span className="chip">{founder.myTracking?.priority || "No"} priority</span>
+              </div>
+              <p className="mt-2 min-h-[40px] text-sm leading-5 text-slate-600">{founder.latestUpdate?.title || "Check in on tracking status"}</p>
+              <p className="mt-3 text-xs font-medium text-slate-500">{founder.trackingCount || 0} investor(s) tracking</p>
             </Link>
           ))}
         </div>
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-semibold text-slate-950">My Tracked Founders</h2>
+        <h2 className="section-title">My Tracked Founders</h2>
         <FounderTable founders={founders} />
       </section>
     </div>
